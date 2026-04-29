@@ -276,10 +276,11 @@ class OrderController extends Controller
 
             $bank = $request->bank ?? 'Online';
 
-            // Simpan order_id Midtrans ke payment_method sementara (tracking)
+            // Simpan midtrans_order_id agar Webhook resmi bisa menemukan transaksi ini
             $transaction->update([
-                'payment_method' => 'Midtrans/' . strtoupper($bank),
-                'operator_id'    => Auth::id()
+                'payment_method'    => 'Midtrans/' . strtoupper($bank),
+                'midtrans_order_id' => $orderId,
+                'operator_id'       => Auth::id()
             ]);
 
             return response()->json([

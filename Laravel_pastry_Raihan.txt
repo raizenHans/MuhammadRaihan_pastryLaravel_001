@@ -1,0 +1,10 @@
+Laravel_pastry_Raihan
+
+username: admin@pastry.com
+password: admin123
+
+username: op@pastry.com
+password: op123456
+
+konfigurasi midtrans
+

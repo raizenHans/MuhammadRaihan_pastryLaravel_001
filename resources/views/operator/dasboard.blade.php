@@ -21,6 +21,9 @@
     $todayDone       = \App\Models\Transaction::where('payment_status','lunas')->whereDate('created_at',today())->count();
     $todayRevenue    = \App\Models\Transaction::where('payment_status','lunas')->whereDate('created_at',today())->sum('final_total');
     $lowStockCount   = \App\Models\Pastry::where('stock','<',10)->count() + \App\Models\Drink::where('stock','<',10)->count();
+    $totalRevenue    = \App\Models\Transaction::where('payment_status','lunas')->sum('final_total');
+    $totalTrxCount   = \App\Models\Transaction::where('payment_status','lunas')->count();
+    $monthRevenue    = \App\Models\Transaction::where('payment_status','lunas')->whereMonth('created_at', now()->month)->whereYear('created_at', now()->year)->sum('final_total');
 @endphp
 
 <div class="row g-3 mb-4">
@@ -57,6 +60,56 @@
             <div style="font-family:'Lato',sans-serif; font-size:0.62rem; letter-spacing:0.2em; text-transform:uppercase; color:{{ $lowStockCount > 0 ? 'rgba(255,100,120,0.6)' : 'rgba(100,200,100,0.6)' }}; margin-bottom:10px;">Stok Menipis</div>
             <div style="font-family:'Playfair Display',serif; font-size:2.5rem; font-weight:700; color:{{ $lowStockCount > 0 ? '#FF8A9B' : '#7BC977' }}; line-height:1;">{{ $lowStockCount }}</div>
             <div style="font-family:'Lato',sans-serif; font-size:0.75rem; color:rgba(255,255,255,0.4); margin-top:6px;">Produk stok &lt; 10</div>
+        </div>
+    </div>
+</div>
+
+<!-- REVENUE SUMMARY ROW -->
+<div class="row g-3 mb-4">
+    <!-- Total Revenue Keseluruhan -->
+    <div class="col-md-4">
+        <div style="background:linear-gradient(135deg,#1A0A2E,#2D1A4A); border-radius:6px; padding:20px; position:relative; overflow:hidden; box-shadow:0 2px 12px rgba(13,13,13,0.1); border-left:4px solid #9B6BE8; transition:transform 0.3s;" onmouseover="this.style.transform='translateY(-3px)';" onmouseout="this.style.transform='translateY(0)';">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                <div>
+                    <div style="font-family:'Lato',sans-serif; font-size:0.62rem; letter-spacing:0.2em; text-transform:uppercase; color:rgba(155,107,232,0.8); margin-bottom:8px;">Total Revenue Keseluruhan</div>
+                    <div style="font-family:'Playfair Display',serif; font-size:1.35rem; font-weight:700; color:#C9A84C; line-height:1.2;">Rp {{ number_format($totalRevenue, 0, ',', '.') }}</div>
+                    <div style="font-family:'Lato',sans-serif; font-size:0.72rem; color:rgba(255,255,255,0.4); margin-top:6px;">{{ $totalTrxCount }} transaksi lunas total</div>
+                </div>
+                <div style="width:44px; height:44px; background:rgba(155,107,232,0.15); border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                    <i class="fa-solid fa-chart-line" style="color:#9B6BE8;"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Revenue Bulan Ini -->
+    <div class="col-md-4">
+        <div style="background:linear-gradient(135deg,#0A1E2E,#1A3A50); border-radius:6px; padding:20px; position:relative; overflow:hidden; box-shadow:0 2px 12px rgba(13,13,13,0.1); border-left:4px solid #4A9EC9; transition:transform 0.3s;" onmouseover="this.style.transform='translateY(-3px)';" onmouseout="this.style.transform='translateY(0)';">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                <div>
+                    <div style="font-family:'Lato',sans-serif; font-size:0.62rem; letter-spacing:0.2em; text-transform:uppercase; color:rgba(74,158,201,0.8); margin-bottom:8px;">Revenue Bulan Ini</div>
+                    <div style="font-family:'Playfair Display',serif; font-size:1.35rem; font-weight:700; color:#5BC4F0; line-height:1.2;">Rp {{ number_format($monthRevenue, 0, ',', '.') }}</div>
+                    <div style="font-family:'Lato',sans-serif; font-size:0.72rem; color:rgba(255,255,255,0.4); margin-top:6px;">{{ now()->format('F Y') }}</div>
+                </div>
+                <div style="width:44px; height:44px; background:rgba(74,158,201,0.15); border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                    <i class="fa-solid fa-calendar-check" style="color:#4A9EC9;"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Rata-rata / Transaksi -->
+    <div class="col-md-4">
+        @php $avgTrx = $totalTrxCount > 0 ? round($totalRevenue / $totalTrxCount) : 0; @endphp
+        <div style="background:linear-gradient(135deg,#1C1A08,#2E2A12); border-radius:6px; padding:20px; position:relative; overflow:hidden; box-shadow:0 2px 12px rgba(13,13,13,0.1); border-left:4px solid #C9A84C; transition:transform 0.3s;" onmouseover="this.style.transform='translateY(-3px)';" onmouseout="this.style.transform='translateY(0)';">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                <div>
+                    <div style="font-family:'Lato',sans-serif; font-size:0.62rem; letter-spacing:0.2em; text-transform:uppercase; color:rgba(201,168,76,0.8); margin-bottom:8px;">Rata-rata per Transaksi</div>
+                    <div style="font-family:'Playfair Display',serif; font-size:1.35rem; font-weight:700; color:#C9A84C; line-height:1.2;">Rp {{ number_format($avgTrx, 0, ',', '.') }}</div>
+                    <div style="font-family:'Lato',sans-serif; font-size:0.72rem; color:rgba(255,255,255,0.4); margin-top:6px;">Nilai rata-rata order</div>
+                </div>
+                <div style="width:44px; height:44px; background:rgba(201,168,76,0.1); border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                    <i class="fa-solid fa-receipt" style="color:#C9A84C;"></i>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -139,38 +192,58 @@
 
     // Hourly transaction data (PHP)
     @php
+        // Ambil semua transaksi lunas hari ini, dikelompokkan per jam
+        $transactionsByHour = \App\Models\Transaction::where('payment_status', 'lunas')
+            ->whereDate('created_at', today())
+            ->selectRaw('HOUR(created_at) as hour, count(*) as count')
+            ->groupBy('hour')
+            ->pluck('count', 'hour')
+            ->toArray();
+
         $hourlyData = [];
-        for($h = 7; $h <= 21; $h++) {
-            $count = \App\Models\Transaction::where('payment_status','lunas')
-                ->whereDate('created_at', today())
-                ->whereRaw('HOUR(created_at) = ?', [$h])
-                ->count();
-            $hourlyData[] = $count;
+        $hourlyLabels = [];
+        
+        // Loop 24 jam untuk memastikan grafik lengkap
+        for($h = 0; $h <= 23; $h++) {
+            $hourlyLabels[] = sprintf('%02d:00', $h);
+            $hourlyData[] = (int) ($transactionsByHour[$h] ?? 0);
         }
-        $hourlyLabels = array_map(fn($h) => sprintf('%02d:00', $h), range(7,21));
     @endphp
 
-    new Chart(document.getElementById('chartHourly'), {
-        type: 'bar',
-        data: {
-            labels: {!! json_encode($hourlyLabels) !!},
-            datasets: [{
-                label: 'Transaksi Lunas',
-                data: {!! json_encode($hourlyData) !!},
-                backgroundColor: 'rgba(201,168,76,0.2)',
-                borderColor: '#C9A84C',
-                borderWidth: 2,
-                borderRadius: 3,
-                hoverBackgroundColor: 'rgba(201,168,76,0.5)',
-            }]
-        },
-        options: {
-            responsive: true, maintainAspectRatio: false,
-            plugins: { legend: { display: false } },
-            scales: {
-                x: { grid: { display: false }, ticks: { font:{size:10}, color:'#6B6560' } },
-                y: { grid:{color:'rgba(0,0,0,0.04)'}, ticks: { font:{size:10}, color:'#6B6560', stepSize:1 } }
-            }
+    document.addEventListener('DOMContentLoaded', function() {
+        if (typeof Chart === 'undefined') {
+            console.error('Chart.js library is not loaded!');
+            return;
+        }
+
+        const hourlyLabels = {!! json_encode($hourlyLabels) !!};
+        const hourlyData   = {!! json_encode($hourlyData) !!};
+
+        const ctxHourly = document.getElementById('chartHourly');
+        if (ctxHourly) {
+            new Chart(ctxHourly, {
+                type: 'bar',
+                data: {
+                    labels: hourlyLabels,
+                    datasets: [{
+                        label: 'Transaksi Lunas',
+                        data: hourlyData,
+                        backgroundColor: 'rgba(201,168,76,0.2)',
+                        borderColor: '#C9A84C',
+                        borderWidth: 2,
+                        borderRadius: 3,
+                        hoverBackgroundColor: 'rgba(201,168,76,0.5)',
+                    }]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { grid: { display: false }, ticks: { font:{size:10}, color:'#6B6560' } },
+                        y: { grid:{color:'rgba(0,0,0,0.04)'}, ticks: { font:{size:10}, color:'#6B6560', stepSize:1 } }
+                    }
+                }
+            });
         }
     });
 </script>

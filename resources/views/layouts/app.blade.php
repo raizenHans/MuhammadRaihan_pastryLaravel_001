@@ -55,6 +55,7 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
+            overflow-x: hidden;
         }
 
         /* ---- Typography ---- */
@@ -234,6 +235,7 @@
     @include('components.navbar')
 
     <!-- Flash messages -->
+    @if(session('success') || session('error'))
     <div class="container mt-3">
         @if(session('success'))
             <div class="alert alert-classic-success alert-dismissible fade show d-flex align-items-center gap-2" role="alert">
@@ -250,18 +252,14 @@
             </div>
         @endif
     </div>
+    @endif
 
-    <main class="container my-4" style="flex:1;">
+    <main class="container {{ request()->routeIs('home') ? 'mb-4' : 'my-4' }}" style="flex:1; min-height: 100vh;">
         @yield('content')
     </main>
 
-    <!-- Footer ornament -->
-    <footer style="background:var(--noir); color:rgba(255,255,255,0.5); padding:24px 0; text-align:center; margin-top:60px;">
-        <p style="font-family:var(--font-heading); font-size:0.9rem; margin:0; letter-spacing:0.1em;">
-            <span style="color:var(--gold)">✦</span> &nbsp; ARTORIOUS PASTRY &nbsp; <span style="color:var(--gold)">✦</span>
-        </p>
-        <p style="font-family:var(--font-ui); font-size:0.75rem; margin:6px 0 0; opacity:0.6;">Artisan Pastry & Café — Est. 2024</p>
-    </footer>
+    <!-- Main Footer Component -->
+    @include('components.footer')
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>

@@ -25,13 +25,17 @@
             <ul class="navbar-nav ms-auto align-items-center gap-1">
                 <li class="nav-item">
                     <a class="nav-link px-3 py-2" href="{{ route('home') }}"
-                       style="font-family:'Lato',sans-serif; font-size:0.85rem; letter-spacing:0.08em; text-transform:uppercase; color:{{ request()->routeIs('home') ? '#C9A84C' : 'rgba(255,255,255,0.7)' }}; font-weight:{{ request()->routeIs('home') ? '700' : '400' }}; transition:color 0.3s; border-bottom:{{ request()->routeIs('home') ? '2px solid #C9A84C' : '2px solid transparent' }};">
+                       style="font-family:'Lato',sans-serif; font-size:0.85rem; letter-spacing:0.08em; text-transform:uppercase; color:{{ request()->routeIs('home') ? '#C9A84C' : 'rgba(255,255,255,0.7)' }}; font-weight:{{ request()->routeIs('home') ? '700' : '400' }}; transition:color 0.3s; border-bottom:{{ request()->routeIs('home') ? '2px solid #C9A84C' : '2px solid transparent' }};"
+                       onmouseover="if('{{ request()->routeIs('home') }}' !== '1') this.style.color='#C9A84C'"
+                       onmouseout="if('{{ request()->routeIs('home') }}' !== '1') this.style.color='rgba(255,255,255,0.7)'">
                         Beranda
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link px-3 py-2" href="{{ route('catalog') }}"
-                       style="font-family:'Lato',sans-serif; font-size:0.85rem; letter-spacing:0.08em; text-transform:uppercase; color:{{ request()->routeIs('catalog') ? '#C9A84C' : 'rgba(255,255,255,0.7)' }}; font-weight:{{ request()->routeIs('catalog') ? '700' : '400' }}; transition:color 0.3s; border-bottom:{{ request()->routeIs('catalog') ? '2px solid #C9A84C' : '2px solid transparent' }};">
+                       style="font-family:'Lato',sans-serif; font-size:0.85rem; letter-spacing:0.08em; text-transform:uppercase; color:{{ request()->routeIs('catalog') ? '#C9A84C' : 'rgba(255,255,255,0.7)' }}; font-weight:{{ request()->routeIs('catalog') ? '700' : '400' }}; transition:color 0.3s; border-bottom:{{ request()->routeIs('catalog') ? '2px solid #C9A84C' : '2px solid transparent' }};"
+                       onmouseover="if('{{ request()->routeIs('catalog') }}' !== '1') this.style.color='#C9A84C'"
+                       onmouseout="if('{{ request()->routeIs('catalog') }}' !== '1') this.style.color='rgba(255,255,255,0.7)'">
                         Katalog Menu
                     </a>
                 </li>
@@ -81,7 +85,36 @@
                     </a>
                 </li>
                 @else
+                @if(Auth::user()->role === 'admin')
                 <li class="nav-item">
+                    <a href="{{ route('admin.dashboard') }}" style="
+                        display:inline-flex; align-items:center; gap:6px;
+                        border:1.5px solid rgba(74,158,201,0.5); color:rgba(255,255,255,0.7);
+                        padding:7px 14px; border-radius:3px; text-decoration:none;
+                        font-family:'Lato',sans-serif; font-size:0.8rem; letter-spacing:0.08em; text-transform:uppercase;
+                        transition:all 0.3s;
+                    "
+                    onmouseover="this.style.borderColor='#5BC4F0'; this.style.color='#5BC4F0';"
+                    onmouseout="this.style.borderColor='rgba(74,158,201,0.5)'; this.style.color='rgba(255,255,255,0.7)';">
+                        <i class="fa-solid fa-gauge-high" style="font-size:0.75rem;"></i> Admin Panel
+                    </a>
+                </li>
+                @elseif(Auth::user()->role === 'operator')
+                <li class="nav-item">
+                    <a href="{{ route('operator.dashboard') }}" style="
+                        display:inline-flex; align-items:center; gap:6px;
+                        border:1.5px solid rgba(201,168,76,0.5); color:rgba(255,255,255,0.7);
+                        padding:7px 14px; border-radius:3px; text-decoration:none;
+                        font-family:'Lato',sans-serif; font-size:0.8rem; letter-spacing:0.08em; text-transform:uppercase;
+                        transition:all 0.3s;
+                    "
+                    onmouseover="this.style.borderColor='#C9A84C'; this.style.color='#C9A84C';"
+                    onmouseout="this.style.borderColor='rgba(201,168,76,0.5)'; this.style.color='rgba(255,255,255,0.7)';">
+                        <i class="fa-solid fa-cash-register" style="font-size:0.75rem;"></i> Dashboard Kasir
+                    </a>
+                </li>
+                @endif
+                <li class="nav-item ms-lg-2">
                     <form action="{{ route('logout') }}" method="POST" style="margin:0;">
                         @csrf
                         <button type="submit" style="

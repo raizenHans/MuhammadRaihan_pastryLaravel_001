@@ -72,6 +72,9 @@
         $pendingOrders = \App\Models\Transaction::where('payment_status','pending')->count();
         $todayOrders   = \App\Models\Transaction::where('payment_status','lunas')->whereDate('created_at',today())->count();
         $lowStock      = \App\Models\Pastry::where('stock','<',10)->count() + \App\Models\Drink::where('stock','<',10)->count();
+        $totalRevenue  = \App\Models\Transaction::where('payment_status','lunas')->sum('final_total');
+        $totalTrx      = \App\Models\Transaction::where('payment_status','lunas')->count();
+        $monthRevenue  = \App\Models\Transaction::where('payment_status','lunas')->whereMonth('created_at', now()->month)->whereYear('created_at', now()->year)->sum('final_total');
     @endphp
 
     <!-- Total Produk -->
@@ -111,6 +114,57 @@
             <div style="font-family:'Playfair Display',serif; font-size:2.2rem; font-weight:700; color:{{ $lowStock > 0 ? '#FF8A9B' : '#7BC977' }}; line-height:1;">{{ $lowStock }}</div>
             <div style="font-family:'Lato',sans-serif; font-size:0.75rem; color:rgba(255,255,255,0.45); margin-top:6px;">Produk stok &lt; 10 pcs</div>
             <i class="fa-solid fa-triangle-exclamation icon-bg" style="color:{{ $lowStock > 0 ? '#FF8A9B' : '#7BC977' }};"></i>
+        </div>
+    </div>
+</div>
+
+<!-- ===== TOTAL REVENUE & RINGKASAN ROW ===== -->
+<div class="row g-3 mb-4">
+    <!-- Total Revenue Keseluruhan -->
+    <div class="col-lg-4 col-md-6">
+        <div class="stat-card" style="background:linear-gradient(135deg,#1A0A2E,#2D1A4A); color:#fff; padding:22px; border-left:4px solid #9B6BE8;">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                <div style="flex:1;">
+                    <div style="font-family:'Lato',sans-serif; font-size:0.62rem; letter-spacing:0.2em; text-transform:uppercase; color:rgba(155,107,232,0.8); margin-bottom:10px;">Total Revenue Keseluruhan</div>
+                    <div style="font-family:'Playfair Display',serif; font-size:1.4rem; font-weight:700; color:#C9A84C; line-height:1.2;">Rp {{ number_format($totalRevenue, 0, ',', '.') }}</div>
+                    <div style="font-family:'Lato',sans-serif; font-size:0.72rem; color:rgba(255,255,255,0.45); margin-top:8px;">{{ $totalTrx }} transaksi lunas total</div>
+                </div>
+                <div style="width:48px; height:48px; background:rgba(155,107,232,0.15); border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-left:12px;">
+                    <i class="fa-solid fa-chart-line" style="color:#9B6BE8; font-size:1.2rem;"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Revenue Bulan Ini -->
+    <div class="col-lg-4 col-md-6">
+        <div class="stat-card" style="background:linear-gradient(135deg,#0A1E2E,#1A3A50); color:#fff; padding:22px; border-left:4px solid #4A9EC9;">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                <div style="flex:1;">
+                    <div style="font-family:'Lato',sans-serif; font-size:0.62rem; letter-spacing:0.2em; text-transform:uppercase; color:rgba(74,158,201,0.8); margin-bottom:10px;">Revenue Bulan Ini</div>
+                    <div style="font-family:'Playfair Display',serif; font-size:1.4rem; font-weight:700; color:#5BC4F0; line-height:1.2;">Rp {{ number_format($monthRevenue, 0, ',', '.') }}</div>
+                    <div style="font-family:'Lato',sans-serif; font-size:0.72rem; color:rgba(255,255,255,0.45); margin-top:8px;">{{ now()->format('F Y') }}</div>
+                </div>
+                <div style="width:48px; height:48px; background:rgba(74,158,201,0.15); border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-left:12px;">
+                    <i class="fa-solid fa-calendar-check" style="color:#4A9EC9; font-size:1.2rem;"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pending Saat Ini -->
+    <div class="col-lg-4 col-md-6">
+        <div class="stat-card" style="background:{{ $pendingOrders > 0 ? 'linear-gradient(135deg,#2E1A08,#4A2D10)' : 'linear-gradient(135deg,#1D2E1A,#2D4A28)' }}; color:#fff; padding:22px; border-left:4px solid {{ $pendingOrders > 0 ? '#F0A040' : '#4AC977' }};">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                <div style="flex:1;">
+                    <div style="font-family:'Lato',sans-serif; font-size:0.62rem; letter-spacing:0.2em; text-transform:uppercase; color:{{ $pendingOrders > 0 ? 'rgba(240,160,64,0.8)' : 'rgba(74,201,119,0.8)' }}; margin-bottom:10px;">Antrean Pending</div>
+                    <div style="font-family:'Playfair Display',serif; font-size:2rem; font-weight:700; color:{{ $pendingOrders > 0 ? '#F0C070' : '#7BC977' }}; line-height:1; {{ $pendingOrders > 0 ? 'animation:pendingPulse 2s infinite;' : '' }}">{{ $pendingOrders }}</div>
+                    <div style="font-family:'Lato',sans-serif; font-size:0.72rem; color:rgba(255,255,255,0.45); margin-top:8px;">Pesanan belum dibayar</div>
+                </div>
+                <div style="width:48px; height:48px; background:{{ $pendingOrders > 0 ? 'rgba(240,160,64,0.15)' : 'rgba(74,201,119,0.15)' }}; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-left:12px;">
+                    <i class="fa-solid fa-clock" style="color:{{ $pendingOrders > 0 ? '#F0A040' : '#4AC977' }}; font-size:1.2rem;"></i>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -232,10 +286,20 @@
     @endphp
 
     const revenueLabels = {!! json_encode($last7Days->pluck('label')) !!};
-    const revenueData   = {!! json_encode($last7Days->pluck('value')) !!};
+    const revenueData   = {!! json_encode($last7Days->pluck('value')->map(fn($v) => (float)$v)) !!};
     const topLabels     = {!! json_encode($topProducts->pluck('product_name')) !!};
-    const topData       = {!! json_encode($topProducts->pluck('total_qty')) !!};
-    const composition   = [{{ $totalPastries }}, {{ $totalDrinks }}, {{ $totalPromos }}];
+    const topData       = {!! json_encode($topProducts->pluck('total_qty')->map(fn($v) => (float)$v)) !!};
+    const composition   = [
+        {{ (float)($totalPastries ?? 0) }}, 
+        {{ (float)($totalDrinks ?? 0) }}, 
+        {{ (float)($totalPromos ?? 0) }}
+    ];
+
+    document.addEventListener('DOMContentLoaded', function() {
+        if (typeof Chart === 'undefined') {
+            console.error('Chart.js library not found. Please check your internet connection or CDN link.');
+            return;
+        }
 
     // ===== Revenue Line Chart =====
     new Chart(document.getElementById('chartRevenue'), {
@@ -315,5 +379,9 @@
             }
         }
     });
+});
 </script>
+<style>
+@keyframes pendingPulse { 0%,100%{opacity:1} 50%{opacity:0.6} }
+</style>
 @endpush

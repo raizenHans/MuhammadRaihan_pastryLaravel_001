@@ -11,7 +11,8 @@
     align-items: center;
     overflow: hidden;
     background: #0D0D0D;
-    margin: -16px -12px 0;
+    /* Teknik untuk break container Bootstrap dan menempel navbar */
+    margin: 0 calc(-50vw + 50%) 0;
 }
 .hero-bg {
     position: absolute; inset: 0;
@@ -54,7 +55,15 @@
     line-height: 1.15;
     margin-bottom: 20px;
 }
-.hero-title em { color: #C9A84C; font-style: italic; }
+.hero-title em {
+    color: #C9A84C;
+    font-style: italic;
+    animation: textGlowBreath 3s ease-in-out infinite;
+}
+@keyframes textGlowBreath {
+    0%, 100% { text-shadow: 0 0 5px rgba(201,168,76,0.2), 0 0 10px rgba(201,168,76,0.1); }
+    50%      { text-shadow: 0 0 15px rgba(201,168,76,0.8), 0 0 30px rgba(201,168,76,0.5), 0 0 45px rgba(201,168,76,0.3); }
+}
 .hero-subtitle {
     font-family: 'Cormorant Garamond', serif;
     font-size: 1.15rem;
@@ -111,6 +120,7 @@
     padding: 10px 0;
     overflow: hidden;
     white-space: nowrap;
+    margin: 0 calc(-50vw + 50%); /* Membuatnya full-width edge-to-edge */
 }
 .marquee-inner {
     display: inline-flex;
@@ -164,7 +174,7 @@
     border-radius: 4px;
     padding: 32px 24px;
     text-align: center;
-    transition: all 0.35s;
+    transition: transform 0.4s cubic-bezier(0.16,1,0.3,1), box-shadow 0.4s ease;
     height: 100%;
     position: relative;
     overflow: hidden;
@@ -176,23 +186,26 @@
     height: 3px;
     background: linear-gradient(90deg, #C9A84C, #8B6914);
     transform: scaleX(0);
-    transition: transform 0.35s;
+    transition: transform 0.4s cubic-bezier(0.16,1,0.3,1);
 }
-.feature-card:hover { transform: translateY(-6px); box-shadow: 0 16px 40px rgba(13,13,13,0.1); }
+.feature-card:hover { transform: translateY(-8px); box-shadow: 0 20px 48px rgba(13,13,13,0.12); }
 .feature-card:hover::after { transform: scaleX(1); }
 .feature-icon {
-    width: 68px; height: 68px;
+    width: 72px; height: 72px;
     background: linear-gradient(135deg, #F5EDD8, #E8D5A3);
     border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
-    margin: 0 auto 20px;
+    margin: 0 auto 22px;
     font-size: 1.6rem;
     color: #8B6914;
-    transition: all 0.35s;
+    transition: all 0.4s cubic-bezier(0.16,1,0.3,1);
+    box-shadow: 0 4px 16px rgba(201,168,76,0.15);
 }
 .feature-card:hover .feature-icon {
     background: linear-gradient(135deg, #C9A84C, #8B6914);
     color: #fff;
+    box-shadow: 0 8px 28px rgba(201,168,76,0.4);
+    transform: scale(1.08);
 }
 .feature-title {
     font-family: 'Playfair Display', serif;
@@ -207,6 +220,105 @@
     color: #6B6560;
     line-height: 1.7;
 }
+
+/* ===== ABOUT SECTION ===== */
+.about-section { padding: 80px 0; background: #FAF7F2; margin: 0 -15px; padding-left: 15px; padding-right: 15px; }
+.about-img-wrap {
+    position: relative;
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(13,13,13,0.18);
+}
+.about-img-wrap img { width: 100%; height: 420px; object-fit: cover; display: block; }
+.about-img-badge {
+    position: absolute; bottom: 24px; left: 24px;
+    background: linear-gradient(135deg,#C9A84C,#8B6914);
+    color: #fff; border-radius: 3px; padding: 12px 20px;
+    font-family: 'Lato', sans-serif; font-size: 0.75rem; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    box-shadow: 0 4px 20px rgba(201,168,76,0.5);
+}
+.about-badge-num {
+    font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; display: block; line-height: 1;
+}
+.stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 32px; }
+.stat-item { text-align: center; }
+.stat-num {
+    font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700;
+    color: #C9A84C; display: block; line-height: 1;
+}
+.stat-label { font-family: 'Lato', sans-serif; font-size: 0.72rem; color: #6B6560; text-transform: uppercase; letter-spacing: 0.1em; margin-top: 4px; display: block; }
+
+/* ===== PROCESS SECTION ===== */
+.process-section { padding: 80px 0; }
+.process-step {
+    text-align: center; padding: 0 16px;
+    position: relative;
+    transition: transform 0.4s cubic-bezier(0.16,1,0.3,1);
+}
+.process-step:hover { transform: translateY(-6px); }
+.process-num {
+    width: 60px; height: 60px;
+    background: linear-gradient(135deg,#111108,#1C1C17);
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 16px;
+    font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700; color: #C9A84C;
+    box-shadow: 0 4px 20px rgba(13,13,13,0.2);
+    transition: all 0.4s cubic-bezier(0.16,1,0.3,1);
+}
+.process-step:hover .process-num {
+    background: linear-gradient(135deg,#C9A84C,#8B6914);
+    color: #fff;
+    box-shadow: 0 8px 28px rgba(201,168,76,0.5);
+}
+.process-connector {
+    position: absolute; top: 30px; right: -50%;
+    width: 100%; height: 1px;
+    background: linear-gradient(90deg,#C9A84C,transparent);
+    pointer-events: none;
+}
+
+/* ===== TESTIMONIAL ===== */
+.testimonial-section {
+    background: linear-gradient(135deg,#111108,#1C1C17);
+    position: relative;
+    overflow: hidden;
+    /* padding & margin dikendalikan via inline style untuk full-width */
+}
+.testimonial-section::before {
+    content: '"'; position: absolute; top: -20px; left: 20px;
+    font-family: 'Playfair Display', serif; font-size: 18rem;
+    color: rgba(201,168,76,0.04); line-height: 1; pointer-events: none;
+}
+.testi-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(201,168,76,0.15);
+    border-radius: 4px; padding: 28px 24px;
+    height: 100%;
+    transition: all 0.4s cubic-bezier(0.16,1,0.3,1);
+    position: relative;
+}
+.testi-card:hover {
+    background: rgba(201,168,76,0.06);
+    border-color: rgba(201,168,76,0.35);
+    transform: translateY(-6px);
+}
+.testi-stars { color: #C9A84C; font-size: 0.85rem; margin-bottom: 14px; }
+.testi-text {
+    font-family: 'Cormorant Garamond', serif; font-size: 1.05rem;
+    color: rgba(255,255,255,0.75); line-height: 1.8; margin-bottom: 20px;
+    font-style: italic;
+}
+.testi-author { display: flex; align-items: center; gap: 12px; }
+.testi-avatar {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: linear-gradient(135deg,#C9A84C,#8B6914);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: #fff;
+    flex-shrink: 0;
+}
+.testi-name { font-family: 'Lato', sans-serif; font-size: 0.85rem; font-weight: 700; color: #fff; }
+.testi-role { font-family: 'Lato', sans-serif; font-size: 0.72rem; color: rgba(201,168,76,0.6); }
 
 /* ===== MEMBER SECTION ===== */
 .member-section {
@@ -320,7 +432,7 @@
 @section('content')
 
 <!-- ===== HERO SECTION ===== -->
-<div class="hero-section" style="margin: -16px -15px 0; border-radius: 0 0 6px 6px;">
+<div class="hero-section">
     <div class="hero-bg"></div>
     <div class="hero-pattern"></div>
     <div class="container">
@@ -369,23 +481,163 @@
     <div class="row g-4">
         <div class="col-md-4 reveal">
             <div class="feature-card">
-                <div class="feature-icon"><i class="fa-solid fa-croissant"></i></div>
+                <div class="feature-icon"><i class="fa-solid fa-bread-slice"></i></div>
                 <div class="feature-title">Fresh Pastry</div>
                 <p class="feature-text">Dipanggang segar setiap pagi menggunakan mentega premium dan tepung pilihan bergaya Eropa.</p>
             </div>
         </div>
-        <div class="col-md-4 reveal" style="animation-delay:0.15s">
+        <div class="col-md-4 reveal" style="transition-delay:0.15s">
             <div class="feature-card">
                 <div class="feature-icon"><i class="fa-solid fa-mug-hot"></i></div>
                 <div class="feature-title">Signature Drinks</div>
                 <p class="feature-text">Dari Espresso murni hingga Matcha autentik — setiap tegukan adalah perjalanan rasa.</p>
             </div>
         </div>
-        <div class="col-md-4 reveal" style="animation-delay:0.3s">
+        <div class="col-md-4 reveal" style="transition-delay:0.3s">
             <div class="feature-card">
                 <div class="feature-icon"><i class="fa-solid fa-star"></i></div>
                 <div class="feature-title">Member Rewards</div>
                 <p class="feature-text">Kumpulkan poin setiap transaksi dan nikmati diskon eksklusif untuk member setia.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== ABOUT SECTION ===== -->
+<div class="about-section">
+    <div class="container">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-5 reveal">
+                <div class="about-img-wrap">
+                    <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?w=800&q=85" alt="Artorious Pastry Dapur">
+                    <div class="about-img-badge">
+                        <span class="about-badge-num">2024</span>
+                        <span style="font-size:0.7rem; opacity:0.85;">Est. Artorious Pastry</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-7 reveal" style="transition-delay:0.2s">
+                <div style="font-family:'Lato',sans-serif; font-size:0.68rem; letter-spacing:0.25em; text-transform:uppercase; color:#C9A84C; margin-bottom:10px;">Tentang Kami</div>
+                <h2 style="font-family:'Playfair Display',serif; font-size:2rem; color:#0D0D0D; font-weight:600; margin-bottom:16px; line-height:1.3;">
+                    Artorious Pastry — <em style="color:#C9A84C; font-style:italic;">Cita Rasa Eropa</em> di Jantung Kota
+                </h2>
+                <div style="height:2px; width:60px; background:linear-gradient(90deg,#C9A84C,#8B6914); margin-bottom:20px;"></div>
+                <p style="font-family:'Cormorant Garamond',serif; font-size:1.1rem; color:#6B6560; line-height:1.9; margin-bottom:16px;">
+                    Artorious Pastry lahir dari kecintaan mendalam terhadap seni membuat roti bergaya Eropa. Setiap produk kami menggunakan bahan-bahan pilihan — mentega premium grade-A, tepung protein tinggi pilihan, dan perisa alami tanpa pengawet.
+                </p>
+                <p style="font-family:'Cormorant Garamond',serif; font-size:1.1rem; color:#6B6560; line-height:1.9; margin-bottom:28px;">
+                    Dipanggang setiap pagi sebelum toko dibuka, memastikan setiap gigitan menghadirkan kelembutan dan kesegaran yang autentik. Kami percaya bahwa kualitas bukan pilihan — ia adalah standar.
+                </p>
+                <div class="stat-grid">
+                    <div class="stat-item">
+                        <span class="stat-num">50+</span>
+                        <span class="stat-label">Varian Produk</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-num">1000+</span>
+                        <span class="stat-label">Member Setia</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-num">100%</span>
+                        <span class="stat-label">Bahan Premium</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== PROCESS SECTION ===== -->
+<div class="process-section">
+    <div class="section-eyebrow">Bagaimana Cara Kerja Kami</div>
+    <h2 class="section-title">Dari Dapur ke Meja Anda</h2>
+    <p class="section-subtitle">Proses sederhana, kualitas luar biasa.</p>
+    <div class="row g-4 mt-2">
+        <div class="col-md-3 col-6 reveal">
+            <div class="process-step">
+                <div class="process-num">01</div>
+                <div style="font-family:'Playfair Display',serif; font-size:1rem; font-weight:600; color:#0D0D0D; margin-bottom:8px;">Pilih Menu</div>
+                <p style="font-family:'Cormorant Garamond',serif; font-size:0.97rem; color:#6B6560; line-height:1.7;">Jelajahi katalog pastry & minuman kami yang beragam.</p>
+            </div>
+        </div>
+        <div class="col-md-3 col-6 reveal" style="transition-delay:0.1s">
+            <div class="process-step">
+                <div class="process-num">02</div>
+                <div style="font-family:'Playfair Display',serif; font-size:1rem; font-weight:600; color:#0D0D0D; margin-bottom:8px;">Tambah Keranjang</div>
+                <p style="font-family:'Cormorant Garamond',serif; font-size:0.97rem; color:#6B6560; line-height:1.7;">Masukkan pilihan ke keranjang dan atur jumlahnya.</p>
+            </div>
+        </div>
+        <div class="col-md-3 col-6 reveal" style="transition-delay:0.2s">
+            <div class="process-step">
+                <div class="process-num">03</div>
+                <div style="font-family:'Playfair Display',serif; font-size:1rem; font-weight:600; color:#0D0D0D; margin-bottom:8px;">Checkout</div>
+                <p style="font-family:'Cormorant Garamond',serif; font-size:0.97rem; color:#6B6560; line-height:1.7;">Konfirmasi pesanan dan dapatkan kode transaksi unik.</p>
+            </div>
+        </div>
+        <div class="col-md-3 col-6 reveal" style="transition-delay:0.3s">
+            <div class="process-step">
+                <div class="process-num">04</div>
+                <div style="font-family:'Playfair Display',serif; font-size:1rem; font-weight:600; color:#0D0D0D; margin-bottom:8px;">Nikmati!</div>
+                <p style="font-family:'Cormorant Garamond',serif; font-size:0.97rem; color:#6B6560; line-height:1.7;">Bayar di kasir, ambil pesanan segar, dan nikmati!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== TESTIMONIAL SECTION ===== -->
+{{-- Full-width: keluar dari container Bootstrap dengan margin negatif --}}
+<div class="testimonial-section" style="
+    margin-left: calc(-50vw + 50%);
+    margin-right: calc(-50vw + 50%);
+    padding: 80px calc(50vw - 50% + 20px);
+    margin-bottom: 60px;
+">
+    <div style="max-width:1160px; margin:0 auto; padding:0 20px;">
+        <div style="font-family:'Lato',sans-serif; font-size:0.68rem; letter-spacing:0.25em; text-transform:uppercase; color:rgba(201,168,76,0.6); text-align:center; margin-bottom:10px;">Kata Pelanggan</div>
+        <h2 style="font-family:'Playfair Display',serif; font-size:2rem; text-align:center; color:#fff; font-weight:600; margin-bottom:8px;">Yang Mereka Katakan</h2>
+        <p style="font-family:'Cormorant Garamond',serif; font-size:1.1rem; text-align:center; color:rgba(255,255,255,0.5); margin-bottom:48px;">Kepercayaan pelanggan adalah mahkota kami.</p>
+        <div class="row g-4">
+            <div class="col-md-4 reveal">
+                <div class="testi-card">
+                    <div class="testi-stars">★★★★★</div>
+                    <p class="testi-text">"Croissant-nya luar biasa! Berlapis sempurna, menteganya terasa di setiap gigitan. Ini tempat favorit saya untuk sarapan setiap hari."
+                    </p>
+                    <div class="testi-author">
+                        <div class="testi-avatar">A</div>
+                        <div>
+                            <div class="testi-name">Aisyah R.</div>
+                            <div class="testi-role">Member Premium</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 reveal" style="transition-delay:0.15s">
+                <div class="testi-card">
+                    <div class="testi-stars">★★★★★</div>
+                    <p class="testi-text">"Sistem member poin-nya sangat menguntungkan! Sudah berkali-kali dapat diskon. Kopi Matcha Latte-nya juga tidak ada tandingannya."
+                    </p>
+                    <div class="testi-author">
+                        <div class="testi-avatar">B</div>
+                        <div>
+                            <div class="testi-name">Budi S.</div>
+                            <div class="testi-role">Member Setia</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 reveal" style="transition-delay:0.3s">
+                <div class="testi-card">
+                    <div class="testi-stars">★★★★★</div>
+                    <p class="testi-text">"Pelayanan cepat dan ramah. Pre-order via aplikasi sangat memudahkan, tinggal ambil dan bayar. Sangat rekomendasikan!"
+                    </p>
+                    <div class="testi-author">
+                        <div class="testi-avatar">D</div>
+                        <div>
+                            <div class="testi-name">Diana P.</div>
+                            <div class="testi-role">Pelanggan Baru</div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
